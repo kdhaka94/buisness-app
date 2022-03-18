@@ -21,7 +21,7 @@ import { LinkButton } from "../components/LinkButton";
 import screenName from "../config/screenName";
 
 // import { signUpSchema_1 } from "../dataschema/user";
-export const SignUpScreen = ({ }) => {
+export const SignUpScreen = ({ navigation }) => {
   const dimensions = Dimensions.get("screen");
 
   const [values, setValues] = useState({
@@ -38,8 +38,7 @@ export const SignUpScreen = ({ }) => {
   };
 
   const handleSignup = async () => {
-    // navigation.navigate(screenName.UpdateProfileScreen);
-
+    navigation.navigate(screenName.UpdateProfileScreen, { userData: values });
     // showMsg("Hello There!");
   };
 
@@ -67,6 +66,11 @@ export const SignUpScreen = ({ }) => {
           onChangeText={(e) => handleValuesChange("mobileNumber", e)}
           keyboardType="numeric"
           value={values.mobileNumber}
+        />
+        <TextInput
+          placeholder="Password*"
+          onChangeText={(e) => handleValuesChange("password", e)}
+          value={values.password}
         />
         <TextInput
           placeholder="Email"

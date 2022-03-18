@@ -1,31 +1,24 @@
+import * as SecureStore from 'expo-secure-store';
+import { useContext, useState } from "react";
 import {
-  Dimensions,
-  Image,
-  ImageBackground,
-  Platform,
+  Dimensions, Platform,
   SafeAreaView,
   StatusBar,
   StyleSheet,
-  Text,
-  TouchableHighlight,
-  TouchableOpacity,
-  View, Alert
+  Text, View
 } from "react-native";
-
-import colors from "../config/colors";
-import { TextInput } from "../components/TextInput";
-import { useState, useContext } from "react";
+import { AuthContext } from "../../App";
+import { request } from "../../utils/request";
 import { Button } from "../components/Button";
 import { LinkButton } from "../components/LinkButton";
+import { TextInput } from "../components/TextInput";
+import colors from "../config/colors";
 import screenName from "../config/screenName";
-import { request } from "../../utils/request";
-import { SERVER_URL } from "../../utils/constants";
-import * as SecureStore from 'expo-secure-store';
-import { AuthContext } from "../../App";
+
 
 export const LoginScreen = ({ navigation }) => {
   const dimensions = Dimensions.get("screen");
-  const { signIn } = useContext(AuthContext);
+  const { signIn, setUser } = useContext(AuthContext);
 
   const [values, setValues] = useState({ mobileNumber: "", password: "" });
 
@@ -40,9 +33,12 @@ export const LoginScreen = ({ navigation }) => {
       await SecureStore.setItemAsync('access_token', response.access_token) ?? ''
       const token = await SecureStore.getItemAsync('access_token') ?? ''
       signIn({ token })
+      // set the user
+      const userresponse = await request('/user/me');
+      setUser({ user: userresponse })
     } catch (err) {
       console.log({ err })
-      
+
     }
   };
   return (

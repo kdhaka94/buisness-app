@@ -12,10 +12,11 @@ import colors from "../config/colors";
 import screenName from "../config/screenName";
 
 export const Dashboard = ({ navigation }) => {
+  
   return (
     <SafeAreaView style={styles.mainContainer}>
       <View style={styles.navbar}>
-        <Text style={styles.navbarText}>Hello, User</Text>
+        <Text style={styles.navbarText}>Hello, </Text>
       </View>
       <View style={styles.container}>
         <View>

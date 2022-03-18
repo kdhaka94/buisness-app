@@ -1,31 +1,28 @@
+import * as SecureStore from 'expo-secure-store';
+import { useContext, useState } from "react";
 import {
-  Dimensions,
-  Image,
-  ImageBackground,
-  Platform,
+  Dimensions, Platform,
   SafeAreaView,
   StatusBar,
   StyleSheet,
-  Text,
-  TouchableHighlight,
-  TouchableOpacity,
-  View,
+  Text, View
 } from "react-native";
-
-import colors from "../config/colors";
-import { TextInput } from "../components/TextInput";
-import { useState } from "react";
+import { AuthContext } from "../../App";
+import { request } from "../../utils/request";
 import { Button } from "../components/Button";
-import { LinkButton } from "../components/LinkButton";
-import screenName from "../config/screenName";
-export const UpdateProfileScreen = ({ navigation }) => {
-  const dimensions = Dimensions.get("screen");
+import { TextInput } from "../components/TextInput";
+import colors from "../config/colors";
 
+export const UpdateProfileScreen = ({ navigation, route }) => {
+  const dimensions = Dimensions.get("screen");
+  const { signIn, setUser } = useContext(AuthContext);
+  const { userData } = route.params;
   const [values, setValues] = useState({
+    ...userData,
     gstNumber: "",
     panNumber: "",
     typeOfBuisness: "",
-    areaOfBuisness: "",
+    addressOfBuisness: "",
     startYear: "",
     address: "",
   });
@@ -33,10 +30,26 @@ export const UpdateProfileScreen = ({ navigation }) => {
   const handleValuesChange = (e, val) => {
     setValues({ ...values, [e]: val });
   };
+
+  const signUpAndMakePayment = async () => {
+    try {
+      console.log({ values })
+      const response = await request({ uri: '/auth/signup', body: values })
+      await SecureStore.setItemAsync('access_token', response.access_token) ?? ''
+      const token = await SecureStore.getItemAsync('access_token') ?? ''
+      signIn({ token })
+      // set the user
+      const userresponse = await request('/user/me');
+      setUser({ user: userresponse })
+    } catch (error) {
+      console.log({ err })
+    }
+    // navigation.navigate(screenName.Dashboard)
+  }
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.navbar}>
-        <Text style={styles.navbarText}>Hello, Kuldeep</Text>
+        <Text style={styles.navbarText}>Hello, {values.name ?? 'User'}</Text>
       </View>
       <View style={styles.subcontainer}>
         <Text style={styles.welcomeText}>Update Profile</Text>
@@ -54,13 +67,13 @@ export const UpdateProfileScreen = ({ navigation }) => {
           />
           <TextInput
             placeholder="Type of buisness"
-            onChangeText={(e) => handleValuesChange("typeofBuisness", e)}
-            value={values.typeofBuisness}
+            onChangeText={(e) => handleValuesChange("typeOfBuisness", e)}
+            value={values.typeOfBuisness}
           />
           <TextInput
             placeholder="Area of buisness*"
-            onChangeText={(e) => handleValuesChange("areaOfBuisness", e)}
-            value={values.areaOfBuisness}
+            onChangeText={(e) => handleValuesChange("addressOfBuisness", e)}
+            value={values.addressOfBuisness}
           />
           <TextInput
             placeholder="Buisness start year*"
@@ -74,7 +87,7 @@ export const UpdateProfileScreen = ({ navigation }) => {
           />
           <Button
             text="Make Payment"
-            onPress={() => navigation.navigate(screenName.Dashboard)}
+            onPress={() => signUpAndMakePayment()}
           />
         </View>
       </View>

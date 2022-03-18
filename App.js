@@ -50,12 +50,18 @@ export default function App() {
             userToken: null,
             isLoading: false
           };
+        case 'SET_USER':
+          return {
+            ...prevState,
+            user: action.user
+          }
       }
     },
     {
       isLoading: true,
       isSignout: false,
       userToken: null,
+      user: null
     }
   );
   React.useEffect(() => {
@@ -64,6 +70,7 @@ export default function App() {
         const response = await request('/user/me');
         const token = await SecureStore.getItemAsync('access_token') ?? ''
         dispatch({ type: 'RESTORE_TOKEN', token: token });
+        dispatch({ type: 'SET_USER', user: response });
       } catch (err) {
         dispatch({ type: 'SIGN_OUT' });
       }
@@ -91,6 +98,9 @@ export default function App() {
 
         dispatch({ type: 'SIGN_IN', token: data.token });
       },
+      setUser: async (data) => {
+        dispatch({ type: "SET_USER", user: data.user })
+      }
     }),
     []
   );
@@ -114,6 +124,10 @@ export default function App() {
             >
               <Stack.Screen name={screenName.Login} component={LoginScreen} />
               <Stack.Screen name={screenName.SignUp} component={SignUpScreen} />
+              <Stack.Screen
+                name={screenName.UpdateProfileScreen}
+                component={UpdateProfileScreen}
+              />
             </Stack.Navigator> :
               <Stack.Navigator
                 screenOptions={{
@@ -138,10 +152,7 @@ export default function App() {
                   name={screenName.ReportSelectCustomer}
                   component={ReportSelectCustomer}
                 />
-                <Stack.Screen
-                  name={screenName.UpdateProfileScreen}
-                  component={UpdateProfileScreen}
-                />
+
               </Stack.Navigator>
             }
           </NavigationContainer>

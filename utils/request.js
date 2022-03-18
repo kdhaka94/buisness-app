@@ -13,15 +13,24 @@ export const request = async ({ uri, requestMethod = 'POST', body = {} }) => {
     body: JSON.stringify(body)
   })
   const response = await data.json()
-  console.log({ response })
   if (response.hasOwnProperty('error')) {
-    Alert.alert(
-      "Error",
-      response.message,
-      [
-        { text: "OK", onPress: () => console.log("OK Pressed") }
-      ]
-    );
+    if (typeof response.message === 'string') {
+      Alert.alert(
+        "Error",
+        response.message,
+        [
+          { text: "OK", onPress: () => console.log("OK Pressed") }
+        ]
+      );
+    } else {
+      Alert.alert(
+        "Error",
+        response.message.join('\n').replace('mobileNumber', 'Mobile Number').replace('password', 'Password'),
+        [
+          { text: "OK", onPress: () => console.log("OK Pressed") }
+        ]
+      );
+    }
     throw new Error(response.message)
   }
   return response;
