@@ -38,7 +38,6 @@ export const LoginScreen = ({ navigation }) => {
       setUser({ user: userresponse })
     } catch (err) {
       console.log({ err })
-
     }
   };
   return (

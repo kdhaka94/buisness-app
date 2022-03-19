@@ -35,9 +35,7 @@ export const SearchSelectCustomer = ({ navigation }) => {
   function close() {
     pickerRef.current.blur();
   }
-  React.useEffect(() => {
-    console.log({ selectionCriteria })
-  }, [selectionCriteria])
+  
   return (
     <SafeAreaView style={styles.mainContainer}>
       <View style={styles.navbar}>

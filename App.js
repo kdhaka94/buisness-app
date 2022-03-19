@@ -67,12 +67,15 @@ export default function App() {
   React.useEffect(() => {
     (async () => {
       try {
-        const response = await request('/user/me');
         const token = await SecureStore.getItemAsync('access_token') ?? ''
+        console.log({ token })
         dispatch({ type: 'RESTORE_TOKEN', token: token });
+        const response = await request('/user/me');
+        console.log({ response })
         dispatch({ type: 'SET_USER', user: response });
       } catch (err) {
-        dispatch({ type: 'SIGN_OUT' });
+        console.log({ err })
+        // dispatch({ type: 'SIGN_OUT' });
       }
     })()
   }, [])
@@ -105,9 +108,7 @@ export default function App() {
     []
   );
 
-  React.useEffect(() => {
-    console.log({ state })
-  }, [state])
+
 
   if (state.isLoading) {
     return <></>

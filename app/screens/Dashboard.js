@@ -7,41 +7,48 @@ import {
   Text,
   View,
 } from "react-native";
+import { AuthContext } from "../../App";
 import { Button } from "../components/Button";
 import colors from "../config/colors";
 import screenName from "../config/screenName";
 
 export const Dashboard = ({ navigation }) => {
-  
+
   return (
     <SafeAreaView style={styles.mainContainer}>
-      <View style={styles.navbar}>
-        <Text style={styles.navbarText}>Hello, </Text>
-      </View>
-      <View style={styles.container}>
-        <View>
-          <Text style={styles.dashboardText}>Dashboard</Text>
-          <Text style={styles.dashboardSubText}>What do you want to do?</Text>
-        </View>
-        <View style={styles.buttonsContainer}>
-          <Button
-            onPress={() => navigation.navigate(screenName.SearchSelectCustomer)}
-            text="Search Customer"
-          />
-          <Button
-            onPress={() => navigation.navigate(screenName.ReportSelectCustomer)}
-            text="Report Customer"
-          />
-          <Button
-            onPress={() => navigation.navigate(screenName.Dashboard)}
-            text="My Profile"
-          />
-          <Button
-            onPress={() => navigation.navigate(screenName.Dashboard)}
-            text="Reported By Other"
-          />
-        </View>
-      </View>
+      <AuthContext.Consumer>
+        {state => <>
+          {console.log(state)}
+          <View style={styles.navbar}>
+            <Text style={styles.navbarText}>Hello, </Text>
+          </View>
+          <View style={styles.container}>
+            <View>
+              <Text style={styles.dashboardText}>Dashboard</Text>
+              <Text style={styles.dashboardSubText}>What do you want to do?</Text>
+            </View>
+            <View style={styles.buttonsContainer}>
+              <Button
+                onPress={() => navigation.navigate(screenName.SearchSelectCustomer)}
+                text="Search Customer"
+              />
+              <Button
+                onPress={() => navigation.navigate(screenName.ReportSelectCustomer)}
+                text="Report Customer"
+              />
+              <Button
+                onPress={() => navigation.navigate(screenName.Dashboard)}
+                text="My Profile"
+              />
+              <Button
+                onPress={() => navigation.navigate(screenName.Dashboard)}
+                text="Reported By Other"
+              />
+            </View>
+          </View>
+        </>
+        }
+      </AuthContext.Consumer>
     </SafeAreaView>
   );
 };

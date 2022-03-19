@@ -33,7 +33,6 @@ export const UpdateProfileScreen = ({ navigation, route }) => {
 
   const signUpAndMakePayment = async () => {
     try {
-      console.log({ values })
       const response = await request({ uri: '/auth/signup', body: values })
       await SecureStore.setItemAsync('access_token', response.access_token) ?? ''
       const token = await SecureStore.getItemAsync('access_token') ?? ''
