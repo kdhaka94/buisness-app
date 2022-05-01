@@ -1,37 +1,49 @@
 import * as SecureStore from 'expo-secure-store';
 import { Alert } from 'react-native';
+import { reps } from '../app/screens/SearchSelectCustomer';
 import { SERVER_URL } from './constants';
 
-export const request = async ({ uri, requestMethod = 'POST', body = {} }) => {
+export const request = async ({ uri, requestMethod = 'POST', body = {}, showError = true }) => {
   try {
     const token = await SecureStore.getItemAsync('access_token') ?? ''
-    const data = await fetch(SERVER_URL + uri, {
+    const options = {
       method: requestMethod,
       headers: {
         Authorization: "Bearer " + token,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(body)
-    })
+    }
+    const url = SERVER_URL + uri
+    const data = await fetch(url, options)
     const response = await data.json()
-    console.log({ response })
-    if (response.hasOwnProperty('error')) {
-      if (typeof response.message === 'string') {
-        Alert.alert(
-          "Error",
-          response.message,
-          [
-            { text: "OK", onPress: () => console.log("OK Pressed") }
-          ]
-        );
-      } else {
-        Alert.alert(
-          "Error",
-          response.message.join('\n').replace('mobileNumber', 'Mobile Number').replace('password', 'Password'),
-          [
-            { text: "OK", onPress: () => console.log("OK Pressed") }
-          ]
-        );
+    if (response.hasOwnProperty('message')) {
+      {
+        if (showError)
+          if (typeof response.message === 'string') {
+            Alert.alert(
+              "Error",
+              response.message,
+              [
+                { text: "OK", onPress: () => console.log("OK Pressed") }
+              ]
+            );
+          } else {
+
+            let message = response.message.join('\n');
+            const keys = Object.keys(reps)
+            keys.map((key) => {
+              message.replace(key, reps[key])
+            })
+
+            Alert.alert(
+              "Error",
+              message,
+              [
+                { text: "OK", onPress: () => console.log("OK Pressed") }
+              ]
+            );
+          }
       }
       throw new Error(response.message)
     }

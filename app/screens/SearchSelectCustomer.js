@@ -20,7 +20,12 @@ export const reps = {
   email: "Email",
   panNumber: 'PAN Number',
   tradeName: 'Buisness Name',
-  mobileNumber: "Mobile Number"
+  mobileNumber: "Mobile Number",
+  areaOfBuisness: "Area Of Buisness",
+  typeOfBuisness: "Type Of Buisness",
+  startYear: "Start Year",
+  addressOfBuisness: "Address Of Buisness",
+  tradeName: "Trade Name",
 }
 
 export const SearchSelectCustomer = ({ navigation }) => {
@@ -35,7 +40,7 @@ export const SearchSelectCustomer = ({ navigation }) => {
   function close() {
     pickerRef.current.blur();
   }
-  
+
   return (
     <SafeAreaView style={styles.mainContainer}>
       <View style={styles.navbar}>

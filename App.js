@@ -1,20 +1,13 @@
 import React, { useState } from "react";
-import { LoginScreen } from "./app/screens/LoginScreen";
 import * as Font from "expo-font";
 import Apploading from "expo-app-loading";
-import { Dashboard } from "./app/screens/Dashboard";
-import { SearchCustomer } from "./app/screens/SearchCustomer";
-import { ReportCustomer } from "./app/screens/ReportCustomer";
-import { SearchSelectCustomer } from "./app/screens/SearchSelectCustomer";
-import { SignUpScreen } from "./app/screens/SignUpScreen";
-import { UpdateProfileScreen } from "./app/screens/UpdateProfileScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import screenName from "./app/config/screenName";
-import { ReportSelectCustomer } from "./app/screens/ReportSelectCustomer";
 import { QueryClient, QueryClientProvider } from "react-query";
 import * as SecureStore from 'expo-secure-store';
 import { request } from "./utils/request";
+import { Dashboard, LoginScreen, SignUpScreen, MyProfile, ReportCustomer, ReportSelectCustomer, SearchCustomer, SearchSelectCustomer, UpdateProfileScreen } from './app/screens'
 
 export const AuthContext = React.createContext();
 
@@ -35,6 +28,7 @@ export default function App() {
           return {
             ...prevState,
             userToken: action.token,
+            user: action.user,
             isLoading: false,
           };
         case 'SIGN_IN':
@@ -44,11 +38,15 @@ export default function App() {
             userToken: action.token,
           };
         case 'SIGN_OUT':
+          (async () => {
+            await SecureStore.deleteItemAsync('access_token')
+          })()
           return {
             ...prevState,
             isSignout: true,
             userToken: null,
-            isLoading: false
+            isLoading: false,
+            user: null
           };
         case 'SET_USER':
           return {
@@ -68,19 +66,18 @@ export default function App() {
     (async () => {
       try {
         const token = await SecureStore.getItemAsync('access_token') ?? ''
-        console.log({ token })
-        dispatch({ type: 'RESTORE_TOKEN', token: token });
-        const response = await request('/user/me');
-        console.log({ response })
-        dispatch({ type: 'SET_USER', user: response });
+        const response = await request({ uri: '/user/me', showError: false });
+        dispatch({ type: 'RESTORE_TOKEN', token: token, user: response });
       } catch (err) {
         console.log({ err })
-        // dispatch({ type: 'SIGN_OUT' });
+        dispatch({ type: 'SIGN_OUT' });
       }
     })()
   }, [])
   // return <><SignUpScreen /></>
-
+  React.useEffect(() => {
+    console.log({ state })
+  }, [state])
 
   const authContext = React.useMemo(
     () => ({
@@ -90,7 +87,7 @@ export default function App() {
         // After getting token, we need to persist the token using `SecureStore`
         // In the example, we'll use a dummy token
 
-        dispatch({ type: 'SIGN_IN', token: data.token });
+        dispatch({ type: 'SIGN_IN', token: data.token, user: data.user });
       },
       signOut: () => dispatch({ type: 'SIGN_OUT' }),
       signUp: async (data) => {
@@ -103,12 +100,10 @@ export default function App() {
       },
       setUser: async (data) => {
         dispatch({ type: "SET_USER", user: data.user })
-      }
+      },
     }),
     []
   );
-
-
 
   if (state.isLoading) {
     return <></>
@@ -116,7 +111,7 @@ export default function App() {
   if (fontsloaded) {
     return (
       <QueryClientProvider client={client}>
-        <AuthContext.Provider value={authContext} >
+        <AuthContext.Provider value={{ state, authContext }} >
           <NavigationContainer>
             {state.isSignout ? <Stack.Navigator
               screenOptions={{
@@ -152,6 +147,10 @@ export default function App() {
                 <Stack.Screen
                   name={screenName.ReportSelectCustomer}
                   component={ReportSelectCustomer}
+                />
+                <Stack.Screen
+                  name={screenName.Profile}
+                  component={MyProfile}
                 />
 
               </Stack.Navigator>

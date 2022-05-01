@@ -7,4 +7,5 @@ export default {
   SearchSelectCustomer: "SearchSelectCustomer",
   ReportSelectCustomer: "ReportSelectCustomer",
   UpdateProfileScreen: "UpdateProfileScreen",
+  Profile: 'Profile'
 };

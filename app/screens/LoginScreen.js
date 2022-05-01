@@ -18,7 +18,7 @@ import screenName from "../config/screenName";
 
 export const LoginScreen = ({ navigation }) => {
   const dimensions = Dimensions.get("screen");
-  const { signIn, setUser } = useContext(AuthContext);
+  const { authContext: { signIn } } = useContext(AuthContext);
 
   const [values, setValues] = useState({ mobileNumber: "", password: "" });
 
@@ -32,10 +32,8 @@ export const LoginScreen = ({ navigation }) => {
       const response = await request({ uri: `/auth/signin`, body: values })
       await SecureStore.setItemAsync('access_token', response.access_token) ?? ''
       const token = await SecureStore.getItemAsync('access_token') ?? ''
-      signIn({ token })
-      // set the user
-      const userresponse = await request('/user/me');
-      setUser({ user: userresponse })
+      const userresponse = await request({ uri: '/user/me' });
+      signIn({ token, user: userresponse })
     } catch (err) {
       console.log({ err })
     }

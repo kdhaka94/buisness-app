@@ -12,38 +12,36 @@ import { Button } from "../components/Button";
 import colors from "../config/colors";
 import screenName from "../config/screenName";
 
-export const Dashboard = ({ navigation }) => {
-
+export const MyProfile = ({ navigation }) => {
   return (
     <AuthContext.Consumer>
-      {context =>
+      {({ state: { user }, authContext: { signOut } }) =>
         <SafeAreaView style={styles.mainContainer}>
           <View style={styles.navbar}>
-            <Text style={styles.navbarText}>Hello, {context?.state?.user?.username ?? 'User'}</Text>
+            <Text style={styles.navbarText}>Hello, {user?.username ?? 'User'}</Text>
           </View>
           <View style={styles.container}>
             <View>
-              <Text style={styles.dashboardText}>Dashboard</Text>
-              <Text style={styles.dashboardSubText}>What do you want to do?</Text>
+              <Text style={styles.dashboardText}>Profile</Text>
             </View>
             <View style={styles.buttonsContainer}>
-              <Button
-                onPress={() => navigation.navigate(screenName.SearchSelectCustomer)}
-                text="Search Customer"
-              />
-              <Button
-                onPress={() => navigation.navigate(screenName.ReportSelectCustomer)}
-                text="Report Customer"
-              />
-              <Button
-                onPress={() => navigation.navigate(screenName.Profile)}
-                text="My Profile"
-              />
-              <Button
-                onPress={() => navigation.navigate(screenName.Dashboard)}
-                text="Reported By Other"
-              />
+              <Text style={styles.infoText}>Name: {user.username}</Text>
+              <Text style={styles.infoText}>GST Number: {user.gstNumber}</Text>
+              <Text style={styles.infoText}>Email: {user.email}</Text>
+              <Text style={styles.infoText}>Mobile Number: {user.mobileNumber}</Text>
+              <Text style={styles.infoText}>PAN Number: {user.panNumber}</Text>
+              <Text style={styles.infoText}>Trade Name: {user.tradeName}</Text>
+              <Text style={styles.infoText}>Area Of Buisness: {user.areaOfBuisness}</Text>
+              <Text style={styles.infoText}>Start Year: {user.startYear}</Text>
             </View>
+          </View>
+          <View>
+            <Button
+              onPress={() => {
+                signOut()
+              }}
+              text="Logout" 
+            />
           </View>
         </SafeAreaView>
       }
@@ -55,6 +53,14 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+  },
+  infoText: {
+    color: colors.black,
+    fontFamily: "Montserrat",
+    textAlign: "left",
+    fontSize: 14,
+    fontWeight: "500",
+    marginBottom: 10
   },
   navbar: {
     height: 50,
@@ -78,8 +84,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
   },
   buttonsContainer: {
-    marginRight: 60,
-    marginLeft: 60,
+    marginRight: 30,
+    marginLeft: 30,
   },
   dashboardText: {
     color: colors.black,

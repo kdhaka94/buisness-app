@@ -27,7 +27,7 @@ export const SignUpScreen = ({ navigation }) => {
   const [values, setValues] = useState({
     mobileNumber: "",
     password: "",
-    name: "",
+    username: "",
     email: "",
     designation: "",
     tradeName: "",
@@ -58,8 +58,8 @@ export const SignUpScreen = ({ navigation }) => {
         <Text style={styles.loginText}>SignUp</Text>
         <TextInput
           placeholder="Name*"
-          onChangeText={(e) => handleValuesChange("name", e)}
-          value={values.name}
+          onChangeText={(e) => handleValuesChange("username", e)}
+          value={values.username}
         />
         <TextInput
           placeholder="Mobile Number*"

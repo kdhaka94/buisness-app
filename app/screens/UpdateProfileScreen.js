@@ -41,7 +41,7 @@ export const UpdateProfileScreen = ({ navigation, route }) => {
       const userresponse = await request('/user/me');
       setUser({ user: userresponse })
     } catch (error) {
-      console.log({ err })
+      console.log({ error })
     }
     // navigation.navigate(screenName.Dashboard)
   }
