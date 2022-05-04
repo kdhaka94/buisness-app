@@ -26,6 +26,7 @@ export const UpdateProfileScreen = ({ navigation, route }) => {
     startYear: "",
     address: "",
   });
+  
 
   const handleValuesChange = (e, val) => {
     setValues({ ...values, [e]: val });
@@ -45,6 +46,9 @@ export const UpdateProfileScreen = ({ navigation, route }) => {
     }
     // navigation.navigate(screenName.Dashboard)
   }
+
+  
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.navbar}>
@@ -147,3 +151,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
+
+// npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/

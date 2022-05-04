@@ -14,6 +14,7 @@ import { LinkButton } from "../components/LinkButton";
 import { TextInput } from "../components/TextInput";
 import colors from "../config/colors";
 import screenName from "../config/screenName";
+import * as AllInOneSDKManager from 'paytm_allinone_react-native'
 
 
 export const LoginScreen = ({ navigation }) => {
@@ -26,6 +27,43 @@ export const LoginScreen = ({ navigation }) => {
     setValues({ ...values, [e]: val });
   };
 
+
+  const makePayment = async () => {
+    try {
+      const response = await request({ uri: '/user/paymentToken' });
+
+      console.log({ response })
+      const orderDetails = {
+        orderId: response.orderId,
+        mid: response.mid,
+        txnToken: response.txnToken,
+        amount: response.txnAmount.value,
+        callbackUrl: response.callbackUrl,
+        isStaging: true,
+        restrictAppInvoke: true,
+        urlScheme: "paytmMID" + response.MID
+      }
+      console.log({ AllInOneSDKManager })
+      const payment_response = await AllInOneSDKManager.default.startTransaction(
+        orderDetails.orderId,
+        orderDetails.mid,
+        orderDetails.txnToken,
+        orderDetails.amount,
+        orderDetails.callbackUrl,
+        orderDetails.isStaging,
+        orderDetails.restrictAppInvoke,
+        orderDetails.urlScheme
+      ).then(value => {
+        console.log({ value })
+      })
+
+      console.log({ payment_response })
+    } catch (errorrr) {
+      console.log({ errorrr })
+    }
+
+  }
+
   const handleLogin = async () => {
     // navigation.navigate(screenName.Dashboard);
     try {
@@ -34,6 +72,9 @@ export const LoginScreen = ({ navigation }) => {
       const token = await SecureStore.getItemAsync('access_token') ?? ''
       const userresponse = await request({ uri: '/user/me' });
       signIn({ token, user: userresponse })
+      if (!userresponse.isPaymentDone) {
+        await makePayment();
+      }
     } catch (err) {
       console.log({ err })
     }

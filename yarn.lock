@@ -2687,7 +2687,7 @@ expo-secure-store@~11.1.0:
   resolved "https://registry.yarnpkg.com/expo-secure-store/-/expo-secure-store-11.1.1.tgz#16f727f56f5b0eef9817fc0d64d79be26f8a34a8"
   integrity sha512-pCajYYoZbl8IORxXw83SLUsWlU6a+HmjJZP8oiSvkG1KnZ5gPepiAMRRmcFUApYXBgiOvKRGOBEUfVwmR7yO4A==
 
-expo-splash-screen@~0.14.0:
+expo-splash-screen@~0.14.0, expo-splash-screen@~0.14.1:
   version "0.14.2"
   resolved "https://registry.yarnpkg.com/expo-splash-screen/-/expo-splash-screen-0.14.2.tgz#2598d6980e71ecd8b7467ca821fb9dbfb80f355b"
   integrity sha512-X25D/0E2AWEFGgDWIVXZ5Bl7FhYk7TgVhEWvplBqrDY7G7vg5l1aoH6PelOQINWPsa1dcRyA7REdN2ltO+0LAw==
@@ -4524,6 +4524,11 @@ path-parse@^1.0.7:
   resolved "https://registry.yarnpkg.com/path-parse/-/path-parse-1.0.7.tgz#fbc114b60ca42b30d9daf5858e4bd68bbedb6735"
   integrity sha512-LDJzPVEEEPR+y48z93A0Ed0yXb8pAByGWo/k5YYdYgpY2/2EsOsksJrq7lOHxryrVOn1ejG6oAp8ahvOIQD8sw==
 
+paytm_allinone_react-native@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/paytm_allinone_react-native/-/paytm_allinone_react-native-1.1.0.tgz#bfc91f9b3b06bda17cd98772769069cdb81df080"
+  integrity sha512-wnSRkyqU2V0zlSQMhY1DpVmtrl7Q/1UHgvN+p3LEzxj2P1JFgJcACr6nVZD2cvH4P1XFt1e+g3/wvJKjzNJHuQ==
+
 picocolors@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/picocolors/-/picocolors-1.0.0.tgz#cb5bdc74ff3f51892236eaf79d68bc44564ab81c"
@@ -4700,11 +4705,6 @@ react-native-codegen@^0.0.6:
     flow-parser "^0.121.0"
     jscodeshift "^0.11.0"
     nullthrows "^1.1.1"
-
-react-native-razorpay@^2.2.8:
-  version "2.2.8"
-  resolved "https://registry.yarnpkg.com/react-native-razorpay/-/react-native-razorpay-2.2.8.tgz#8aad1c78a64f75d6136d69f5cca84a8dda763674"
-  integrity sha512-rq75oN5ENvRvlpq3rtVA52JEXAD68lj4tlZH1CHtnhZUxSd6mljwEZl3y41QVNY8f4+XbpQhx8XHFTF4Azq8fg==
 
 react-native-safe-area-context@^4.1.2:
   version "4.1.2"

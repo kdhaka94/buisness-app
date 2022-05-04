@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import * as SecureStore from 'expo-secure-store';
 import { request } from "./utils/request";
 import { Dashboard, LoginScreen, SignUpScreen, MyProfile, ReportCustomer, ReportSelectCustomer, SearchCustomer, SearchSelectCustomer, UpdateProfileScreen } from './app/screens'
+import { makePayemnt } from "./utils/context";
 
 export const AuthContext = React.createContext();
 
@@ -75,9 +76,7 @@ export default function App() {
     })()
   }, [])
   // return <><SignUpScreen /></>
-  React.useEffect(() => {
-    console.log({ state })
-  }, [state])
+
 
   const authContext = React.useMemo(
     () => ({
@@ -100,6 +99,9 @@ export default function App() {
       },
       setUser: async (data) => {
         dispatch({ type: "SET_USER", user: data.user })
+        if (!data.user.isPaymentDone) {
+          await makePayemnt();
+        }
       },
     }),
     []
@@ -113,7 +115,7 @@ export default function App() {
       <QueryClientProvider client={client}>
         <AuthContext.Provider value={{ state, authContext }} >
           <NavigationContainer>
-            {state.isSignout ? <Stack.Navigator
+            {(state.isSignout || !(state?.user?.isPaymentDone || false)) ? <Stack.Navigator
               screenOptions={{
                 headerShown: false,
               }}

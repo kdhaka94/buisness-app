@@ -17,6 +17,7 @@ export const request = async ({ uri, requestMethod = 'POST', body = {}, showErro
     const url = SERVER_URL + uri
     const data = await fetch(url, options)
     const response = await data.json()
+    console.log({ response })
     if (response.hasOwnProperty('message')) {
       {
         if (showError)
@@ -55,6 +56,8 @@ export const request = async ({ uri, requestMethod = 'POST', body = {}, showErro
 }
 
 
+const handleError = (err) => {
 
+}
 
 
