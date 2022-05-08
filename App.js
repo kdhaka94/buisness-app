@@ -37,6 +37,7 @@ export default function App() {
             ...prevState,
             isSignout: false,
             userToken: action.token,
+            user: action.user
           };
         case 'SIGN_OUT':
           (async () => {
@@ -85,6 +86,7 @@ export default function App() {
         // We will also need to handle errors if sign in failed
         // After getting token, we need to persist the token using `SecureStore`
         // In the example, we'll use a dummy token
+        console.log({ data })
 
         dispatch({ type: 'SIGN_IN', token: data.token, user: data.user });
       },
@@ -111,11 +113,12 @@ export default function App() {
     return <></>
   }
   if (fontsloaded) {
+    console.log({ state })
     return (
       <QueryClientProvider client={client}>
         <AuthContext.Provider value={{ state, authContext }} >
           <NavigationContainer>
-            {(state.isSignout || !(state?.user?.isPaymentDone || false)) ? <Stack.Navigator
+            {(state.isSignout || (!state?.user?.isPaymentDone)) ? <Stack.Navigator
               screenOptions={{
                 headerShown: false,
               }}
