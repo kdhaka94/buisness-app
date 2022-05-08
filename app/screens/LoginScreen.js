@@ -15,6 +15,7 @@ import { TextInput } from "../components/TextInput";
 import colors from "../config/colors";
 import screenName from "../config/screenName";
 import * as AllInOneSDKManager from 'paytm_allinone_react-native'
+import { Alert } from 'react-native';
 
 
 export const LoginScreen = ({ navigation }) => {
@@ -53,8 +54,27 @@ export const LoginScreen = ({ navigation }) => {
         orderDetails.isStaging,
         orderDetails.restrictAppInvoke,
         orderDetails.urlScheme
-      ).then(value => {
-        console.log({ value })
+      ).then(async (value) => {
+        if (value.hasOwnProperty("errorMessage")) {
+          Alert.alert("Payment Failed", value.errorMessage,
+            [
+              { text: "OK", onPress: () => console.log("OK Pressed") }
+            ]
+          )
+          return;
+        }
+        if (value.STATUS == 'TXN_SUCCESS') {
+          const verifyRes = await request({ uri: '/user/verifyPayment', body: { data: JSON.stringify(value) } });
+          Alert.alert("Payment Sucess", "Payment done sucessfully",
+            [
+              { text: "OK", onPress: () => console.log("OK Pressed") }
+            ]
+          )
+          console.log({ verifyRes })
+          handleLogin();
+        }
+        return;
+
       })
 
       console.log({ payment_response })
@@ -71,7 +91,9 @@ export const LoginScreen = ({ navigation }) => {
       await SecureStore.setItemAsync('access_token', response.access_token) ?? ''
       const token = await SecureStore.getItemAsync('access_token') ?? ''
       const userresponse = await request({ uri: '/user/me' });
+
       signIn({ token, user: userresponse })
+
       if (!userresponse.isPaymentDone) {
         await makePayment();
       }
