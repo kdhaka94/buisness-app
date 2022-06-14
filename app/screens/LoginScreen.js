@@ -94,9 +94,9 @@ export const LoginScreen = ({ navigation }) => {
 
       signIn({ token, user: userresponse })
 
-      if (!userresponse.isPaymentDone) {
-        await makePayment();
-      }
+      // if (!userresponse.isPaymentDone) {
+      //   await makePayment();
+      // }
     } catch (err) {
       console.log({ err })
     }

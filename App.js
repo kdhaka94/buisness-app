@@ -7,8 +7,9 @@ import screenName from "./app/config/screenName";
 import { QueryClient, QueryClientProvider } from "react-query";
 import * as SecureStore from 'expo-secure-store';
 import { request } from "./utils/request";
-import { Dashboard, LoginScreen, SignUpScreen, MyProfile, ReportCustomer, ReportSelectCustomer, SearchCustomer, SearchSelectCustomer, UpdateProfileScreen } from './app/screens'
+import { Dashboard, LoginScreen, SignUpScreen, MyProfile, ReportCustomer, ReportSelectCustomer, SearchCustomer, SearchSelectCustomer, UpdateProfileScreen, ReportedByCustomer } from './app/screens'
 import { makePayemnt } from "./utils/context";
+import { VerifyUserScreen } from "./app/screens/VerifyUserScreen";
 
 export const AuthContext = React.createContext();
 
@@ -118,7 +119,14 @@ export default function App() {
       <QueryClientProvider client={client}>
         <AuthContext.Provider value={{ state, authContext }} >
           <NavigationContainer>
-            {(state.isSignout || (!state?.user?.isPaymentDone)) ? <Stack.Navigator
+            {(state.isSignout) ? (state.user && !state.user.isAccountVerified ? <Stack.Navigator
+              screenOptions={{
+                headerShown: false,
+              }}
+            >
+              <Stack.Screen name={screenName.VerifyUser} component={VerifyUserScreen} />
+
+            </Stack.Navigator> : <Stack.Navigator
               screenOptions={{
                 headerShown: false,
               }}
@@ -129,7 +137,7 @@ export default function App() {
                 name={screenName.UpdateProfileScreen}
                 component={UpdateProfileScreen}
               />
-            </Stack.Navigator> :
+            </Stack.Navigator>) :
               <Stack.Navigator
                 screenOptions={{
                   headerShown: false,
@@ -156,6 +164,10 @@ export default function App() {
                 <Stack.Screen
                   name={screenName.Profile}
                   component={MyProfile}
+                />
+                <Stack.Screen
+                  name={screenName.ReportedByCustomer}
+                  component={ReportedByCustomer}
                 />
 
               </Stack.Navigator>

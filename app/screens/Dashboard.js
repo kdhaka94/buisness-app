@@ -14,6 +14,61 @@ import screenName from "../config/screenName";
 
 export const Dashboard = ({ navigation }) => {
 
+  const makePayment = async () => {
+    try {
+      const response = await request({ uri: '/user/paymentToken' });
+
+      console.log({ response })
+      const orderDetails = {
+        orderId: response.orderId,
+        mid: response.mid,
+        txnToken: response.txnToken,
+        amount: response.txnAmount.value,
+        callbackUrl: response.callbackUrl,
+        isStaging: true,
+        restrictAppInvoke: true,
+        urlScheme: "paytmMID" + response.MID
+      }
+      console.log({ AllInOneSDKManager })
+      const payment_response = await AllInOneSDKManager.default.startTransaction(
+        orderDetails.orderId,
+        orderDetails.mid,
+        orderDetails.txnToken,
+        orderDetails.amount,
+        orderDetails.callbackUrl,
+        orderDetails.isStaging,
+        orderDetails.restrictAppInvoke,
+        orderDetails.urlScheme
+      ).then(async (value) => {
+        if (value.hasOwnProperty("errorMessage")) {
+          Alert.alert("Payment Failed", value.errorMessage,
+            [
+              { text: "OK", onPress: () => console.log("OK Pressed") }
+            ]
+          )
+          return;
+        }
+        if (value.STATUS == 'TXN_SUCCESS') {
+          const verifyRes = await request({ uri: '/user/verifyPayment', body: { data: JSON.stringify(value) } });
+          Alert.alert("Payment Sucess", "Payment done sucessfully",
+            [
+              { text: "OK", onPress: () => console.log("OK Pressed") }
+            ]
+          )
+          console.log({ verifyRes })
+          handleLogin();
+        }
+        return;
+
+      })
+
+      console.log({ payment_response })
+    } catch (errorrr) {
+      console.log({ errorrr })
+    }
+
+  }
+
   return (
     <AuthContext.Consumer>
       {context =>
@@ -40,9 +95,14 @@ export const Dashboard = ({ navigation }) => {
                 text="My Profile"
               />
               <Button
-                onPress={() => navigation.navigate(screenName.Dashboard)}
+                onPress={() => navigation.navigate(screenName.ReportedByCustomer)}
                 text="Reported By Other"
               />
+              {!context?.state?.user?.isPaymentDone &&
+                <Button
+                  onPress={() => makePayment()}
+                  text="Make Payment Now"
+                />}
             </View>
           </View>
         </SafeAreaView>

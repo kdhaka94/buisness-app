@@ -1,5 +1,6 @@
 export default {
   Login: "Login",
+  VerifyUser: "VerifyUser",
   SignUp: "SignUp",
   Dashboard: "Dashboard",
   SearchCustomer: "SearchCustomer",
@@ -7,5 +8,7 @@ export default {
   SearchSelectCustomer: "SearchSelectCustomer",
   ReportSelectCustomer: "ReportSelectCustomer",
   UpdateProfileScreen: "UpdateProfileScreen",
-  Profile: 'Profile'
+  Profile: 'Profile',  
+  ReportedByCustomer: 'ReportedByCustomer',  
+
 };

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "892225210883",
+    "project_id": "buisness-app-49207",
+    "storage_bucket": "buisness-app-49207.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:892225210883:android:b47886af2b9ee434331c36",
+        "android_client_info": {
+          "package_name": "com.dhaka.buisnessapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "892225210883-qap0bvhblp41dhmb88dnkll2q84tr5o8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dhaka.buisnessapp",
+            "certificate_hash": "3121574d7ed5091e782511afa5e79ca2f1720eb9"
+          }
+        },
+        {
+          "client_id": "892225210883-ad726lvq3qhq9qafblkpa28u2i34mfg7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtC_gsmCnKtMhVq22RDLFhgopa_hCtn40"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "892225210883-ad726lvq3qhq9qafblkpa28u2i34mfg7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
