@@ -49,10 +49,10 @@ export const request = async ({ uri, requestMethod = 'POST', body = {}, showErro
       throw new Error(response.message)
     }
     if (response.hasOwnProperty('success_message')) {
-      if (typeof response.message === 'string') {
+      if (typeof response.success_message === 'string') {
         Alert.alert(
           "",
-          response.message,
+          response.success_message,
           [
             { text: "OK", onPress: () => console.log("OK Pressed") }
           ]

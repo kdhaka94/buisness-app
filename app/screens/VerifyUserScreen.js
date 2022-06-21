@@ -9,16 +9,20 @@ import {
 import { AuthContext } from "../../App";
 import { request } from "../../utils/request";
 import { Button } from "../components/Button";
+import { LinkButton } from "../components/LinkButton";
+import { LoadingIndicator } from "../components/loading";
 import { TextInput } from "../components/TextInput";
 import colors from "../config/colors";
 
 
 export const VerifyUserScreen = ({ navigation }) => {
   const dimensions = Dimensions.get("screen");
-  const authContext = useContext(AuthContext);
+  const { authContext: { setUser } } = useContext(AuthContext);
+
 
   console.log({ authContext })
   const [values, setValues] = useState({ otp: "" });
+  const [loading, setLoading] = useState(false)
   const [timer, setTimer] = useState(0)
   const handleValuesChange = (e, val) => {
     setValues({ ...values, [e]: val });
@@ -26,22 +30,46 @@ export const VerifyUserScreen = ({ navigation }) => {
 
   React.useEffect(() => {
     (async () => {
-      const response = await request({ uri: `/user/sendVerificationCode`, body: values });
+      setLoading(true)
+      try {
+        await request({ uri: `/user/sendVerificationCode`, body: values });
+      } catch (err) {
+        console.log({ err })
+      } finally {
+        setLoading(false)
+      }
     })()
+    return () => {
+      setLoading(false)
+    }
   }, [])
 
   const verifyUser = async () => {
+    setLoading(true)
     try {
       const response = await request({ uri: `/user/verifyMe`, body: values });
       console.log({ response })
       const userresponse = await request({ uri: '/user/me' });
-      authContext.authContext.setuser({ user: userresponse })
+      setUser({ user: userresponse })
     } catch (err) {
-
+      setLoading(false)
     }
   }
 
-  return (
+  const resendCode = async () => {
+    setLoading(true)
+    try {
+      await request({ uri: `/user/sendVerificationCode`, body: values });
+    } catch (err) {
+      console.log({ err })
+
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (<>
+    {loading && <LoadingIndicator />}
     <SafeAreaView style={styles.container}>
       <StatusBar
         animated={true}
@@ -60,8 +88,11 @@ export const VerifyUserScreen = ({ navigation }) => {
           value={values.otp}
         />
         <Button onPress={() => verifyUser()} text="Verify OTP" />
+        <LinkButton onPress={() => resendCode()}
+          text="Resend" />
       </View>
     </SafeAreaView>
+  </>
   );
 };
 

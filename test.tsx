@@ -12,7 +12,6 @@ import {
   SearchCustomer,
   SearchSelectCustomer, SignUpScreen, UpdateProfileScreen
 } from './app/screens';
-import { UpdateUserProfileScreen } from './app/screens/UpdateUserProfileScreen';
 import { VerifyUserScreen } from './app/screens/VerifyUserScreen';
 import { request } from './utils/request';
 
@@ -171,10 +170,6 @@ export default function App() {
               <Stack.Screen
                 name={screenName.ReportedByCustomer}
                 component={ReportedByCustomer}
-              />
-              <Stack.Screen
-                name={screenName.UpdateUserProfileScreen}
-                component={UpdateUserProfileScreen}
               />
             </Stack.Navigator>
           )}

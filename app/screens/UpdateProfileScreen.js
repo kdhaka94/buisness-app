@@ -1,5 +1,5 @@
 import * as SecureStore from 'expo-secure-store';
-import { useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Dimensions,
   Platform,
@@ -13,12 +13,13 @@ import { TouchableOpacity } from 'react-native';
 import { AuthContext } from '../../App';
 import { request } from '../../utils/request';
 import { Button } from '../components/Button';
+import { LoadingIndicator } from '../components/loading';
 import { TextInput } from '../components/TextInput';
 import colors from '../config/colors';
 
 export const UpdateProfileScreen = ({ navigation, route }) => {
-  const dimensions = Dimensions.get('screen');
   const { authContext: { signIn, setUser } } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false)
   const { userData } = route.params;
   const [values, setValues] = useState({
     ...userData,
@@ -35,69 +36,73 @@ export const UpdateProfileScreen = ({ navigation, route }) => {
   };
 
   const signUpAndMakePayment = async () => {
+    setLoading(true)
     try {
-      
       const response = await request({ uri: '/auth/signup', body: values });
       (await SecureStore.setItemAsync('access_token', response.access_token)) ??
         '';
       const token = (await SecureStore.getItemAsync('access_token')) ?? '';
       signIn({ token });
       // set the user
-      const userresponse = await request('/user/me');
+      const userresponse = await request({ uri: '/user/me' });
       setUser({ user: userresponse });
     } catch (error) {
       console.log({ error });
     }
+    setLoading(false)
     // navigation.navigate(screenName.Dashboard)
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View>
-        <TouchableOpacity onPress={() => signUpAndMakePayment()}>
-          <Text style={styles.navbarText}>Skip &gt;</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.subcontainer}>
-        <Text style={styles.welcomeText}>Update Profile</Text>
+    <>
+      {loading && <LoadingIndicator />}
+      <SafeAreaView style={styles.container}>
         <View>
-          <TextInput
-            placeholder="GST Number*"
-            onChangeText={(e) => handleValuesChange('gstNumber', e)}
-            value={values.gstNumber}
-          />
-          <TextInput
-            placeholder="PAN Number*"
-            onChangeText={(e) => handleValuesChange('panNumber', e)}
-            value={values.panNumber}
-          />
-          <TextInput
-            placeholder="Type of buisness"
-            onChangeText={(e) => handleValuesChange('typeOfBuisness', e)}
-            value={values.typeOfBuisness}
-          />
-          <TextInput
-            placeholder="Area of buisness*"
-            onChangeText={(e) => handleValuesChange('addressOfBuisness', e)}
-            value={values.addressOfBuisness}
-          />
-          <TextInput
-            placeholder="Buisness start year*"
-            onChangeText={(e) => handleValuesChange('startYear', e)}
-            value={values.startYear}
-          />
-          <TextInput
-            placeholder="Address of buisness*"
-            onChangeText={(e) => handleValuesChange('address', e)}
-            value={values.address}
-          />
-          <Button text="Make Payment" onPress={() => signUpAndMakePayment()} />
-          <TouchableOpacity style={styles.paylaterBtn}>
-            <Text style={styles.paylaterBtnText}>Pay Later</Text>
+          <TouchableOpacity onPress={() => signUpAndMakePayment()}>
+            <Text style={styles.navbarText}>Skip &gt;</Text>
           </TouchableOpacity>
         </View>
-      </View>
-    </SafeAreaView>
+        <View style={styles.subcontainer}>
+          <Text style={styles.welcomeText}>Update Profile</Text>
+          <View>
+            <TextInput
+              placeholder="GST Number*"
+              onChangeText={(e) => handleValuesChange('gstNumber', e)}
+              value={values.gstNumber}
+            />
+            <TextInput
+              placeholder="PAN Number*"
+              onChangeText={(e) => handleValuesChange('panNumber', e)}
+              value={values.panNumber}
+            />
+            <TextInput
+              placeholder="Type of buisness"
+              onChangeText={(e) => handleValuesChange('typeOfBuisness', e)}
+              value={values.typeOfBuisness}
+            />
+            <TextInput
+              placeholder="Area of buisness*"
+              onChangeText={(e) => handleValuesChange('addressOfBuisness', e)}
+              value={values.addressOfBuisness}
+            />
+            <TextInput
+              placeholder="Buisness start year*"
+              onChangeText={(e) => handleValuesChange('startYear', e)}
+              value={values.startYear}
+            />
+            <TextInput
+              placeholder="Address of buisness*"
+              onChangeText={(e) => handleValuesChange('address', e)}
+              value={values.address}
+            />
+            <Button text="Make Payment" onPress={() => signUpAndMakePayment()} />
+            <TouchableOpacity style={styles.paylaterBtn}>
+              <Text style={styles.paylaterBtnText}>Pay Later</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </SafeAreaView>
+    </>
   );
 };
 

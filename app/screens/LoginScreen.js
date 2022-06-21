@@ -16,13 +16,14 @@ import colors from "../config/colors";
 import screenName from "../config/screenName";
 import * as AllInOneSDKManager from 'paytm_allinone_react-native'
 import { Alert } from 'react-native';
+import { LoadingIndicator } from '../components/loading';
 
 
 export const LoginScreen = ({ navigation }) => {
   const dimensions = Dimensions.get("screen");
   const { authContext: { signIn } } = useContext(AuthContext);
-
   const [values, setValues] = useState({ mobileNumber: "", password: "" });
+  const [loading, setLoading] = useState(false)
 
   const handleValuesChange = (e, val) => {
     setValues({ ...values, [e]: val });
@@ -86,6 +87,7 @@ export const LoginScreen = ({ navigation }) => {
 
   const handleLogin = async () => {
     // navigation.navigate(screenName.Dashboard);
+    setLoading(true)
     try {
       const response = await request({ uri: `/auth/signin`, body: values })
       await SecureStore.setItemAsync('access_token', response.access_token) ?? ''
@@ -99,9 +101,12 @@ export const LoginScreen = ({ navigation }) => {
       // }
     } catch (err) {
       console.log({ err })
+      setLoading(false)
     }
+
   };
-  return (
+  return (<>
+    {loading && <LoadingIndicator />}
     <SafeAreaView style={styles.container}>
       <StatusBar
         animated={true}
@@ -137,6 +142,7 @@ export const LoginScreen = ({ navigation }) => {
         </View>
       </View>
     </SafeAreaView>
+  </>
   );
 };
 

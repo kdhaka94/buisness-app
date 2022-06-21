@@ -5,10 +5,12 @@ import {
   StyleSheet,
   Text,
   View,
+  ScrollView
 } from 'react-native';
 import { AuthContext } from '../../App';
 import { Button } from '../components/Button';
 import colors from '../config/colors';
+import screenName from '../config/screenName';
 
 export const MyProfile = ({ navigation }) => {
   return (
@@ -19,58 +21,68 @@ export const MyProfile = ({ navigation }) => {
             <Text style={styles.navbarText}>My Profile</Text>
           </View>
           <View style={styles.container}>
-            <View style={styles.buttonsContainer}>
-              <View style={styles.infoTextContainer}>
-                <Text style={styles.infoText}>Name: </Text>
-                <Text style={styles.infoTextView}>
-                  {!!user.username ? user.username : '-'}
-                </Text>
+            <ScrollView>
+              <View style={styles.buttonsContainer}>
+                <View style={styles.infoTextContainer}>
+                  <Text style={styles.infoText}>Name: </Text>
+                  <Text style={styles.infoTextView}>
+                    {!!user.username ? user.username : '-'}
+                  </Text>
+                </View>
+                <View style={styles.infoTextContainer}>
+                  <Text style={styles.infoText}>GST Number: </Text>
+                  <Text style={styles.infoTextView}>
+                    {!!user.gstNumber ? user.gstNumber : '-'}
+                  </Text>
+                </View>
+                <View style={styles.infoTextContainer}>
+                  <Text style={styles.infoText}>Email: </Text>
+                  <Text style={styles.infoTextView}>
+                    {!!user.email ? user.email : '-'}
+                  </Text>
+                </View>
+                <View style={styles.infoTextContainer}>
+                  <Text style={styles.infoText}>Mobile Number: </Text>
+                  <Text style={styles.infoTextView}>
+                    {!!user.mobileNumber ? user.mobileNumber : '-'}
+                  </Text>
+                </View>
+                <View style={styles.infoTextContainer}>
+                  <Text style={styles.infoText}>PAN Number: </Text>
+                  <Text style={styles.infoTextView}>
+                    {!!user.panNumber ? user.panNumber : '-'}
+                  </Text>
+                </View>
+                <View style={styles.infoTextContainer}>
+                  <Text style={styles.infoText}>Trade Name: </Text>
+                  <Text style={styles.infoTextView}>
+                    {!!user.tradeName ? user.tradeName : '-'}
+                  </Text>
+                </View>
+                <View style={styles.infoTextContainer}>
+                  <Text style={styles.infoText}>Area Of Buisness: </Text>
+                  <Text style={styles.infoTextView}>
+                    {!!user.areaOfBuisness ? user.areaOfBuisness : '-'}
+                  </Text>
+                </View>
+                <View style={styles.infoTextContainer}>
+                  <Text style={styles.infoText}>Start Year: </Text>
+                  <Text style={styles.infoTextView}>
+                    {!!user.startYear ? user.startYear : '-'}
+                  </Text>
+                </View>
               </View>
-              <View style={styles.infoTextContainer}>
-                <Text style={styles.infoText}>GST Number: </Text>
-                <Text style={styles.infoTextView}>
-                  {!!user.gstNumber ? user.gstNumber : '-'}
-                </Text>
-              </View>
-              <View style={styles.infoTextContainer}>
-                <Text style={styles.infoText}>Email: </Text>
-                <Text style={styles.infoTextView}>
-                  {!!user.email ? user.email : '-'}
-                </Text>
-              </View>
-              <View style={styles.infoTextContainer}>
-                <Text style={styles.infoText}>Mobile Number: </Text>
-                <Text style={styles.infoTextView}>
-                  {!!user.mobileNumber ? user.mobileNumber : '-'}
-                </Text>
-              </View>
-              <View style={styles.infoTextContainer}>
-                <Text style={styles.infoText}>PAN Number: </Text>
-                <Text style={styles.infoTextView}>
-                  {!!user.panNumber ? user.panNumber : '-'}
-                </Text>
-              </View>
-              <View style={styles.infoTextContainer}>
-                <Text style={styles.infoText}>Trade Name: </Text>
-                <Text style={styles.infoTextView}>
-                  {!!user.tradeName ? user.tradeName : '-'}
-                </Text>
-              </View>
-              <View style={styles.infoTextContainer}>
-                <Text style={styles.infoText}>Area Of Buisness: </Text>
-                <Text style={styles.infoTextView}>
-                  {!!user.areaOfBuisness ? user.areaOfBuisness : '-'}
-                </Text>
-              </View>
-              <View style={styles.infoTextContainer}>
-                <Text style={styles.infoText}>Start Year: </Text>
-                <Text style={styles.infoTextView}>
-                  {!!user.startYear ? user.startYear : '-'}
-                </Text>
-              </View>
-            </View>
+            </ScrollView>
           </View>
-          <View>
+          <View style={styles.buttonsContainer}>
+
+            <Button
+              onPress={() => {
+                navigation.navigate(screenName.UpdateUserProfileScreen);
+              }}
+              text="Update Profile"
+            />
+
             <Button
               onPress={() => {
                 signOut();
