@@ -20,7 +20,7 @@ export const request = async ({ uri, requestMethod = 'POST', body = {}, showErro
     console.log({ response })
     if (response.hasOwnProperty('message')) {
       {
-        if (showError)
+        if (showError) {
           if (typeof response.message === 'string') {
             Alert.alert(
               "Error",
@@ -30,7 +30,6 @@ export const request = async ({ uri, requestMethod = 'POST', body = {}, showErro
               ]
             );
           } else {
-
             let message = response.message.join('\n');
             const keys = Object.keys(reps)
             keys.map((key) => {
@@ -45,8 +44,20 @@ export const request = async ({ uri, requestMethod = 'POST', body = {}, showErro
               ]
             );
           }
+        }
       }
       throw new Error(response.message)
+    }
+    if (response.hasOwnProperty('success_message')) {
+      if (typeof response.message === 'string') {
+        Alert.alert(
+          "",
+          response.message,
+          [
+            { text: "OK", onPress: () => console.log("OK Pressed") }
+          ]
+        );
+      }
     }
     return response;
   } catch (error) {

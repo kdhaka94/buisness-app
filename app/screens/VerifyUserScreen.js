@@ -7,6 +7,7 @@ import {
   Text, View
 } from "react-native";
 import { AuthContext } from "../../App";
+import { request } from "../../utils/request";
 import { Button } from "../components/Button";
 import { TextInput } from "../components/TextInput";
 import colors from "../config/colors";
@@ -18,15 +19,27 @@ export const VerifyUserScreen = ({ navigation }) => {
 
   console.log({ authContext })
   const [values, setValues] = useState({ otp: "" });
-
+  const [timer, setTimer] = useState(0)
   const handleValuesChange = (e, val) => {
     setValues({ ...values, [e]: val });
   };
 
   React.useEffect(() => {
-
+    (async () => {
+      const response = await request({ uri: `/user/sendVerificationCode`, body: values });
+    })()
   }, [])
 
+  const verifyUser = async () => {
+    try {
+      const response = await request({ uri: `/user/verifyMe`, body: values });
+      console.log({ response })
+      const userresponse = await request({ uri: '/user/me' });
+      authContext.authContext.setuser({ user: userresponse })
+    } catch (err) {
+
+    }
+  }
 
   return (
     <SafeAreaView style={styles.container}>

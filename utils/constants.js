@@ -1,1 +1,1 @@
-export const SERVER_URL = 'https://polar-mountain-44524.herokuapp.com'
+export const SERVER_URL = 'https://buisness-app-server-production.up.railway.app'

@@ -102,9 +102,9 @@ export default function App() {
       },
       setUser: async (data) => {
         dispatch({ type: "SET_USER", user: data.user })
-        if (!data.user.isPaymentDone) {
-          await makePayemnt();
-        }
+        // if (!data.user.isPaymentDone) {
+        //   await makePayemnt();
+        // }
       },
     }),
     []
@@ -119,14 +119,7 @@ export default function App() {
       <QueryClientProvider client={client}>
         <AuthContext.Provider value={{ state, authContext }} >
           <NavigationContainer>
-            {(state.isSignout) ? (state.user && !state.user.isAccountVerified ? <Stack.Navigator
-              screenOptions={{
-                headerShown: false,
-              }}
-            >
-              <Stack.Screen name={screenName.VerifyUser} component={VerifyUserScreen} />
-
-            </Stack.Navigator> : <Stack.Navigator
+            {(state.isSignout) ? <Stack.Navigator
               screenOptions={{
                 headerShown: false,
               }}
@@ -137,7 +130,14 @@ export default function App() {
                 name={screenName.UpdateProfileScreen}
                 component={UpdateProfileScreen}
               />
-            </Stack.Navigator>) :
+            </Stack.Navigator> : (state.user && !state.user.isAccountVerified ? <Stack.Navigator
+              screenOptions={{
+                headerShown: false,
+              }}
+            >
+              <Stack.Screen name={screenName.VerifyUser} component={VerifyUserScreen} />
+
+            </Stack.Navigator> :
               <Stack.Navigator
                 screenOptions={{
                   headerShown: false,
@@ -170,7 +170,7 @@ export default function App() {
                   component={ReportedByCustomer}
                 />
 
-              </Stack.Navigator>
+              </Stack.Navigator>)
             }
           </NavigationContainer>
         </AuthContext.Provider>

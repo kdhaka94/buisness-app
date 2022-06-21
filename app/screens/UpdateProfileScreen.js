@@ -18,7 +18,7 @@ import colors from '../config/colors';
 
 export const UpdateProfileScreen = ({ navigation, route }) => {
   const dimensions = Dimensions.get('screen');
-  const { signIn, setUser } = useContext(AuthContext);
+  const { authContext: { signIn, setUser } } = useContext(AuthContext);
   const { userData } = route.params;
   const [values, setValues] = useState({
     ...userData,
@@ -36,6 +36,7 @@ export const UpdateProfileScreen = ({ navigation, route }) => {
 
   const signUpAndMakePayment = async () => {
     try {
+      
       const response = await request({ uri: '/auth/signup', body: values });
       (await SecureStore.setItemAsync('access_token', response.access_token)) ??
         '';
