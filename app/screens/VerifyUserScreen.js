@@ -19,8 +19,6 @@ export const VerifyUserScreen = ({ navigation }) => {
   const dimensions = Dimensions.get("screen");
   const { authContext: { setUser } } = useContext(AuthContext);
 
-
-  console.log({ authContext })
   const [values, setValues] = useState({ otp: "" });
   const [loading, setLoading] = useState(false)
   const [timer, setTimer] = useState(0)

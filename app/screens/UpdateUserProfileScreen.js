@@ -1,16 +1,10 @@
-import * as SecureStore from 'expo-secure-store';
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import {
-  Dimensions,
   Platform,
-  SafeAreaView,
-  StatusBar,
+  SafeAreaView, ScrollView, StatusBar,
   StyleSheet,
-  Text,
-  ScrollView,
-  View,
+  Text, View
 } from 'react-native';
-import { TouchableOpacity } from 'react-native';
 import { AuthContext } from '../../App';
 import { request } from '../../utils/request';
 import { Button } from '../components/Button';
@@ -65,16 +59,15 @@ export const UpdateUserProfileScreen = ({ navigation }) => {
           <Text style={styles.navbarText}>Update Your Profile</Text>
         </View>
         <View style={styles.subcontainer}>
-          {/* <View> */}
           <ScrollView>
-            {Object.keys(template).map(key => <TextInput
+            {Object.keys(template).map((key, index) => <TextInput
+              key={index}
               placeholder={template[key]}
               onChangeText={(e) => handleValuesChange(key, e)}
               value={values[key]}
             />)}
           </ScrollView>
           <Button text="Update Profile" onPress={() => handleUpdateProfile()} />
-          {/* </View> */}
         </View>
       </SafeAreaView>
     </>

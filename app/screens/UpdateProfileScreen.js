@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     // alignItems: "center",
   },
   navbarText: {
-    color: colors.background,
+    color: colors.black,
     fontFamily: 'Montserrat',
     marginLeft: 34,
     textAlign: 'left',

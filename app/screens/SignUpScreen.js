@@ -53,7 +53,7 @@ export const SignUpScreen = ({ navigation }) => {
         hidden={false}
         barStyle="dark-content"
       />
-      <Text style={styles.welcomeText}>Let’s Get You Setup</Text>
+      {/* <Text style={styles.welcomeText}>Let’s Get You Setup</Text> */}
       <View>
         <Text style={styles.loginText}>SignUp</Text>
         <TextInput
@@ -90,7 +90,7 @@ export const SignUpScreen = ({ navigation }) => {
         <Button onPress={() => handleSignup()} text="Get Started" />
         <View style={styles.linksContainer}>
           <LinkButton
-            // onPress={() => navigation.navigate(screenName.Login)}
+            onPress={() => navigation.navigate(screenName.Login)}
             text="Already a user?"
           />
         </View>
