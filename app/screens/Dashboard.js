@@ -8,11 +8,15 @@ import {
   View,
 } from "react-native";
 import { AuthContext } from "../../App";
+import { request } from "../../utils/request";
 import { Button } from "../components/Button";
 import colors from "../config/colors";
 import screenName from "../config/screenName";
+import * as AllInOneSDKManager from 'paytm_allinone_react-native'
+import { Alert } from 'react-native';
 
 export const Dashboard = ({ navigation }) => {
+  const { authContext: { setUser } } = useContext(AuthContext);
 
   const makePayment = async () => {
     try {
@@ -56,7 +60,9 @@ export const Dashboard = ({ navigation }) => {
             ]
           )
           console.log({ verifyRes })
-          handleLogin();
+          const me = await request({ uri: '/user/me' });
+          setUser({ user: me })
+
         }
         return;
 
