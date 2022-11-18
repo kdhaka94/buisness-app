@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import {
+  Alert,
   FlatList,
   Image,
+  KeyboardAvoidingView,
   Platform,
   SafeAreaView,
   StatusBar,
@@ -15,57 +17,65 @@ import { Button } from "../components/Button";
 import screenName from "../config/screenName";
 import { reps } from "./SearchSelectCustomer";
 import { TextInput } from "../components/TextInput";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export const ReportSelectCustomer = ({ navigation }) => {
-  const [selectionCriteria, setSelectionCriteria] = React.useState('gstNumber');
-  const [selectionId, setSelectionId] = React.useState("")
-  const pickerRef = React.useRef();
+  const [values, setValues] = useState({
+    gstNumber: '',
+    panNumber: '',
+    typeOfBuisness: '',
+    addressOfBuisness: '',
+    startYear: '',
+    address: '',
+  });
+  const handleValuesChange = (e, val) => {
+    setValues({ ...values, [e]: val });
+  };
 
-  function open() {
-    pickerRef.current.focus();
-  }
-
-  function close() {
-    pickerRef.current.blur();
-  }
   return (
     <SafeAreaView style={styles.mainContainer}>
       <View style={styles.navbar}>
         <Text style={styles.navbarText}>Report Customer</Text>
       </View>
-      <View style={styles.container}>
-        <Text style={styles.heading}>Selection criteria</Text>
-
-        <Picker
-          selectedValue={selectionCriteria}
-          onValueChange={(itemValue, itemIndex) =>
-            setSelectionCriteria(itemValue)
-          }
-          ref={pickerRef}
-          prompt="Choose selection criteria"
-          style={styles.input}
-          accessibilityLabel="Styled Picker Accessibility Label"
-        >
-          <Picker.Item label="GST Number" value="gstNumber" />
-          <Picker.Item label="PAN Number" value="panNumber" />
-          <Picker.Item label="Mobile Number" value="mobileNumber" />
-          <Picker.Item label="Email ID" value="email" />
-          {/* <Picker.Item label="DIN Number" value="dinNumber" /> */}
-          <Picker.Item label="Buisness Name" value="tradeName" />
-          {/* <Picker.Item label="Individual Name" value="name" /> */}
-        </Picker>
-        {selectionCriteria &&
+      <KeyboardAwareScrollView>
+        <View style={styles.container}>
           <TextInput
-            placeholder={`Enter ${reps[selectionCriteria]}`}
-            onChangeText={(e) => setSelectionId(e)}
-            value={selectionId}
+            placeholder="GST Number*"
+            onChangeText={(e) => handleValuesChange('gstNumber', e)}
+            value={values.gstNumber}
           />
-        }
-      </View>
+          <TextInput
+            placeholder="PAN Number*"
+            onChangeText={(e) => handleValuesChange('panNumber', e)}
+            value={values.panNumber}
+          />
+          <TextInput
+            placeholder="Type of buisness"
+            onChangeText={(e) => handleValuesChange('typeOfBuisness', e)}
+            value={values.typeOfBuisness}
+          />
+          <TextInput
+            placeholder="Area of buisness*"
+            onChangeText={(e) => handleValuesChange('addressOfBuisness', e)}
+            value={values.addressOfBuisness}
+          />
+          <TextInput
+            placeholder="Buisness start year*"
+            onChangeText={(e) => handleValuesChange('startYear', e)}
+            value={values.startYear}
+          />
+          <TextInput
+            placeholder="Address of buisness*"
+            onChangeText={(e) => handleValuesChange('address', e)}
+            value={values.address}
+          />
+        </View>
+      </KeyboardAwareScrollView>
       <View style={styles.buttonsContainer}>
         <Button
-          onPress={() => navigation.navigate(screenName.ReportCustomer, { selectionBy: selectionCriteria, selectionId })}
-          text="Search Customer"
+          // onPress={() => navigation.navigate(screenName.ReportCustomer, { selectionBy: selectionCriteria, selectionId })}
+          onPress={() => Alert.alert('Report Customer', 'Report has been succussfully submited!')}
+          text="Report Customer"
         />
       </View>
     </SafeAreaView>
@@ -73,6 +83,9 @@ export const ReportSelectCustomer = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  keyboardcontainer: {
+    flex: 1
+  },
   input: {
     borderRadius: 8,
     paddingBottom: 9,
@@ -133,7 +146,6 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     marginRight: 60,
     marginLeft: 60,
-    marginBottom: 100,
   },
   dashboardText: {
     color: colors.black,

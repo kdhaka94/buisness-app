@@ -16,7 +16,7 @@ export const request = async ({ uri, requestMethod = 'POST', body = {}, showErro
     }
     const url = SERVER_URL + uri
     const data = await fetch(url, options)
-    const response = await data.json()
+    const response = await data.text()
     console.log({ response })
     if (response.hasOwnProperty('message')) {
       {
@@ -61,7 +61,7 @@ export const request = async ({ uri, requestMethod = 'POST', body = {}, showErro
     }
     return response;
   } catch (error) {
-    console.log({ error })
+    console.log({ error: JSON.stringify(error) })
     throw new Error(error.message)
   }
 }
@@ -71,4 +71,6 @@ const handleError = (err) => {
 
 }
 
+// DATABASE_URL: mongodb+srv://kdhaka94:YxALSt9MRDwXiAVH@cluster0.gnzhc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+// JWT_SECRET: AZM1
 

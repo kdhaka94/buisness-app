@@ -120,7 +120,7 @@ export default function App() {
     return (
       <AuthContext.Provider value={{ state, authContext }}>
         <NavigationContainer>
-          {state.isSignout ? (
+          {false ? (
             <Stack.Navigator
               screenOptions={{
                 headerShown: false,
@@ -133,7 +133,7 @@ export default function App() {
                 component={UpdateProfileScreen}
               />
             </Stack.Navigator>
-          ) : state.user && !state.user.isAccountVerified ? (
+          ) : false ? (
             <Stack.Navigator
               screenOptions={{
                 headerShown: false,
